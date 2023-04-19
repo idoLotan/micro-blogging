@@ -1,0 +1,9 @@
+.Line {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.Line.Between {
+    justify-content: space-between;
+}
