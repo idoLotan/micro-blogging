@@ -20,7 +20,7 @@ const Profile = () => {
 
   return (
     <div className="profile">
-      <div className="profile-title">profile</div>
+      <div className="profile-title">Profile</div>
       {toggleProfile ? (
         <UpdateForm onCancel={handleProfile} />
       ) : (
@@ -31,15 +31,16 @@ const Profile = () => {
             ) : (
               <Icon icon={"user-circle"} size={"fa-7x"}></Icon>
             )}
-            <Rows>
+            <div className="profile-section">
               <h2>{context.name}</h2>
               <h4>{context.email}</h4>
-            </Rows>
+            </div>
           </Line>
 
-          <button onClick={handleProfile} className="btn logout-btn">
-            update profile
+          <button onClick={handleProfile} className="btn update-btn">
+            update your profile
           </button>
+          {/* <h5 onClick={handleProfile}>update your profile?</h5> */}
         </form>
       )}
     </div>

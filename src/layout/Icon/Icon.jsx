@@ -1,6 +1,8 @@
 import "./Icon.css";
 
-const Icon = ({ icon, onClick, size }) => {
-  return <i className={`fas fa-${icon} ${size}`} onClick={onClick}></i>;
+const Icon = ({ icon, onClick, size, className = [""] }) => {
+  return (
+    <i className={`fas fa-${icon} ${size} ${className}`} onClick={onClick}></i>
+  );
 };
 export default Icon;

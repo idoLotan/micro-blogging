@@ -1,8 +1,37 @@
-import React from "react";
-import useTweet from "../Hooks/useTweet";
+import React, { useContext, useState } from "react";
+import { UserContext } from "../Context/userContext";
+import { db } from "../config/config";
+import { addDoc, collection } from "firebase/firestore";
+import { formatDate } from "../utils/utils";
 
 function AddTweet() {
-  const { warning, onSubmit, setContent } = useTweet();
+  const [warning, setWarning] = useState("");
+  const [content, setContent] = useState("");
+  const context = useContext(UserContext);
+
+  const createTweet = async () => {
+    const userCollectionRef = collection(db, "tweets");
+    await addDoc(userCollectionRef, {
+      content: content,
+      date: formatDate(new Date()),
+      userName: context.name,
+      userId: context.userId,
+      key: Date.now(),
+    });
+  };
+
+  const checkForm = () => {
+    const textLength = content.length;
+    textLength > 140
+      ? setWarning("The tweet can't contain more then 140 chars.")
+      : setWarning("");
+    return textLength < 140;
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    checkForm() && createTweet();
+  };
 
   return (
     <form className="add-form">
