@@ -45,7 +45,7 @@ function AddTweet() {
       ></textarea>
       <div className="warning">{warning}</div>
 
-      <button onClick={onSubmit} className="tweet-button btn">
+      <button onClick={onSubmit} className="tweet-btn btn">
         Tweet
       </button>
     </form>

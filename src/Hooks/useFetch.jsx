@@ -66,6 +66,23 @@ const useFetch = () => {
     });
   };
 
+  // const changeEmail = async (newName) => {
+  //   const userCollectionRef = collection(db, "tweets");
+  //   onSnapshot(userCollectionRef, (snapshot) => {
+  //     const tweetsIds = snapshot.docs.map(
+  //       (doc) => doc.data().userId == currntUserId && doc.id
+  //     );
+  //     tweetsIds.forEach((id) => {
+  //       if (id !== false) {
+  //         const docRef = doc(db, "tweets", id);
+  //         updateDoc(docRef, {
+  //           userName: newName,
+  //         });
+  //       }
+  //     });
+  //   });
+  // };
+
   return {
     getMoreTweets,
     getTweets,

@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { UserContext } from "../Context/userContext";
 import { useContext } from "react";
-import { Line } from "../layout/Line/Line";
 import Icon from "../layout/Icon/Icon";
-import useUpdate from "../Hooks/useUpdate";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
 import { auth, storage } from "../config/config";
@@ -14,16 +12,19 @@ const UpdateForm = ({ onCancel }) => {
   const context = useContext(UserContext);
   const [imageUpload, setImageUpload] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
-
   const [isEditProfile, setIsEditProfile] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const hiddenFileInput = useRef(null);
   const { changeName } = useFetch();
 
+  console.log(isLoading);
+
   const nameRef = useRef();
+  const emailRef = useRef();
 
   useEffect(() => {
     setImageUrl(context.profilePic);
+    setIsLoading(true);
   }, []);
 
   const profileToggle = () => {
@@ -31,7 +32,7 @@ const UpdateForm = ({ onCancel }) => {
   };
 
   function handleImageLoaded() {
-    setIsLoading(false);
+    setIsLoading(true);
   }
 
   const handleFileUpload = (event) => {
@@ -46,14 +47,18 @@ const UpdateForm = ({ onCancel }) => {
   };
 
   const uploadPic = async () => {
-    if (imageUpload == null) return;
-    const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-    const snapshot = await uploadBytes(imageRef, imageUpload);
-    const url = await getDownloadURL(snapshot.ref);
-    setImageUrl(url);
-    await updateProfile(auth.currentUser, {
-      photoURL: url,
-    });
+    try {
+      if (imageUpload == null) return;
+      const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+      const snapshot = await uploadBytes(imageRef, imageUpload);
+      const url = await getDownloadURL(snapshot.ref);
+      setImageUrl(url);
+      await updateProfile(auth.currentUser, {
+        photoURL: url,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const removePic = () => {
@@ -63,12 +68,19 @@ const UpdateForm = ({ onCancel }) => {
     setImageUrl(false);
   };
 
-  const changeUserName = () => {
-    updateProfile(auth.currentUser, {
+  const changeUserName = async () => {
+    const resp = await updateProfile(auth.currentUser, {
       displayName: nameRef.current.value,
     });
-    changeName(nameRef.current.value);
+    const resp2 = await changeName(nameRef.current.value);
   };
+
+  // const changeEmail = async () => {
+  //   const resp = await updateProfile(auth.currentUser, {
+  //     email: emailRef.current.value,
+  //   });
+  //   const resp2 = await changeEmail(emailRef.current.value);
+  // };
 
   const handleClick = () => {
     hiddenFileInput.current.click();
@@ -76,7 +88,8 @@ const UpdateForm = ({ onCancel }) => {
 
   const handleSave = async () => {
     await uploadPic();
-    changeUserName();
+    await changeUserName();
+    // await changeEmail();
     profileToggle();
     window.location.reload();
   };
@@ -84,63 +97,76 @@ const UpdateForm = ({ onCancel }) => {
   return (
     <div
       className="update-form"
-      style={{ display: isLoading ? "none" : "block" }}
+      style={{ display: isLoading ? "block" : "none" }}
     >
-      {imageUrl ? (
-        <>
-          <div className="profile-pic-container" onClick={handleClick}>
-            {/* <h6 className="profile-pic-text">change picture</h6> */}
-            <img
-              onLoad={handleImageLoaded}
-              className="profile-pic-page"
-              src={imageUrl}
-            ></img>
+      <div className="update-form-section">
+        {imageUrl ? (
+          <div>
+            <div className="image-container">
+              <div className="profile-pic-container" onClick={handleClick}>
+                <img
+                  onLoad={handleImageLoaded}
+                  className="profile-pic-page"
+                  src={imageUrl}
+                ></img>
 
-            <div className="container-half-width">
-              <div className="half-width"></div>
-              <Icon icon={"camera"} className={"image-icon"}></Icon>
+                <div className="container-half-width">
+                  <div className="half-width"></div>
+
+                  <Icon icon={"camera"} className={"image-icon"}></Icon>
+                </div>
+              </div>
+              <h3 className="col">{context.name}</h3>
             </div>
           </div>
-        </>
-      ) : (
-        <div onClick={handleClick} className="profile-pic-page">
-          <Icon icon={"user-circle"} size={"fa-7x"}></Icon>
+        ) : (
+          <div onClick={handleClick} className="profile-pic-page">
+            <Icon icon={"user-circle"} size={"fa-8x"}></Icon>
+            <h3 className="col">{context.name}</h3>
+          </div>
+        )}
+        <div className="update-form-title">
+          <h2>Account Setting</h2>
         </div>
-      )}
-      <input
-        type="file"
-        className="upload-pic"
-        id="file"
-        ref={hiddenFileInput}
-        onChange={handleFileUpload}
-      />
-      {/* <div>
-        <input type="file" onChange={handleFileUpload} />
-        {imageUrl && <img src={imageUrl} alt="Uploaded" />}
-      </div> */}
+      </div>
 
-      <Line>
+      <div className="update-form-input">
+        <div>User name:</div>
         <input
           type="text"
-          className="input-user"
+          className="input-user "
           defaultValue={context.name}
           ref={nameRef}
         />
-      </Line>
-      <button
-        className="btn"
-        style={{ backgroundColor: "#007BFF", color: "white" }}
-        onClick={handleSave}
-      >
-        save changes
-      </button>
-      <button
-        className="btn"
-        style={{ backgroundColor: "#007BFF", color: "white" }}
-        onClick={onCancel}
-      >
-        cancel
-      </button>
+        <div className="pad"></div>
+        {/* <div>Email:</div>
+        <input
+          type="text"
+          className="input-user "
+          defaultValue={context.email}
+          ref={emailRef}
+        /> */}
+
+        <input
+          type="file"
+          className="upload-pic"
+          id="file"
+          ref={hiddenFileInput}
+          onChange={handleFileUpload}
+          style={{ display: "none" }}
+        />
+      </div>
+      <div className="update-form-buttons">
+        <button className="blue-instance btn" onClick={handleSave}>
+          Update
+        </button>
+        <button className="btn" onClick={onCancel}>
+          cancel
+        </button>
+        <button className="btn" onClick={removePic}>
+          delete image
+        </button>
+      </div>
     </div>
   );
 };

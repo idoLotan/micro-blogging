@@ -1,7 +1,12 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "@firebase/firestore";
-import { getAuth } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  reload,
+  signInWithPopup,
+} from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
@@ -19,3 +24,22 @@ const analytics = getAnalytics(app);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
+
+export const provider = new GoogleAuthProvider();
+export const singInWithGoogle = async (e) => {
+  e.preventDefault();
+  try {
+    const results = await signInWithPopup(auth, provider);
+    window.location.reload();
+    // console.log(results);
+    // const name = results.user.displayName;
+    // const email = results.user.email;
+    // const profilePic = results.user.photoURL;
+    // context.setName(name);
+    // context.setEmail(email);
+    // context.setProfilePic(profilePic);
+    // context.setIsUserLogged(true);
+  } catch (err) {
+    console.log(err);
+  }
+};

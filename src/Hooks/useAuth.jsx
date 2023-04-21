@@ -16,22 +16,22 @@ import { db } from "../config/config";
 const useAuth = () => {
   const context = useContext(UserContext);
 
-  const provider = new GoogleAuthProvider();
-  const singInWithGoogle = async (e) => {
-    e.preventDefault();
-    try {
-      const results = await signInWithPopup(auth, provider);
-      const name = results.user.displayName;
-      const email = results.user.email;
-      const profilePic = results.user.photoURL;
-      context.setName(name);
-      context.setEmail(email);
-      context.setProfilePic(profilePic);
-      context.setIsUserLogged(true);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const provider = new GoogleAuthProvider();
+  // const singInWithGoogle = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const results = await signInWithPopup(auth, provider);
+  //     // const name = results.user.displayName;
+  //     // const email = results.user.email;
+  //     // const profilePic = results.user.photoURL;
+  //     // context.setName(name);
+  //     // context.setEmail(email);
+  //     // context.setProfilePic(profilePic);
+  //     // context.setIsUserLogged(true);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const register = async (e) => {
     e.preventDefault();
@@ -83,7 +83,7 @@ const useAuth = () => {
   return {
     login,
     register,
-    singInWithGoogle,
+    // singInWithGoogle,
     logout,
   };
 };

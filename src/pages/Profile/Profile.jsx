@@ -1,6 +1,4 @@
 import { UserContext } from "../../Context/userContext";
-import { Line } from "../../layout/Line/Line";
-import { Rows } from "../../layout/Rows/Rows";
 import { useContext, useState } from "react";
 import "./Profile.css";
 import UpdateForm from "../../components/updateForm";
@@ -20,28 +18,29 @@ const Profile = () => {
 
   return (
     <div className="profile">
-      <div className="profile-title">Profile</div>
+      <div className="profile-title"></div>
       {toggleProfile ? (
         <UpdateForm onCancel={handleProfile} />
       ) : (
-        <form className="profile-form">
-          <Line>
+        <div className="profile-section row between">
+          <div className="row">
             {context.profilePic ? (
               <img src={context.profilePic} className="profile-pic-page" />
             ) : (
               <Icon icon={"user-circle"} size={"fa-7x"}></Icon>
             )}
-            <div className="profile-section">
+            <div className="pad">
               <h2>{context.name}</h2>
               <h4>{context.email}</h4>
             </div>
-          </Line>
-
+          </div>
           <button onClick={handleProfile} className="btn update-btn">
             update your profile
+            <Icon icon={"pen"} />
           </button>
+
           {/* <h5 onClick={handleProfile}>update your profile?</h5> */}
-        </form>
+        </div>
       )}
     </div>
   );

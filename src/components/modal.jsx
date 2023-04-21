@@ -4,10 +4,17 @@ import { useContext } from "react";
 import { UserContext } from "../Context/userContext";
 import useAuth from "../Hooks/useAuth";
 import Icon from "../layout/Icon/Icon";
+import { auth } from "../config/config";
+import { signOut } from "firebase/auth";
 
-const Modal = () => {
+const Modal = ({ setIsUserLogged }) => {
   const context = useContext(UserContext);
-  const { logout } = useAuth();
+
+  const logout = async (e) => {
+    e.preventDefault();
+    await signOut(auth);
+    setIsUserLogged(false);
+  };
   return ReactDOM.createPortal(
     <React.Fragment>
       <div className="modal-overlay" />

@@ -2,14 +2,13 @@ import React, { useContext, useRef } from "react";
 import { UserContext } from "../Context/userContext";
 import { login } from "../Auth/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/config";
+import { auth, singInWithGoogle } from "../config/config";
+import useAuth from "../Hooks/useAuth";
 
-const LoginForm = ({ Login, singInWithGoogle, toggle }) => {
+const LoginForm = ({ toggle }) => {
   const context = useContext(UserContext);
   const emailRef = useRef();
   const passwordRef = useRef();
-
-  // console.log(emailRef.current.value);
 
   const login = async (e) => {
     e.preventDefault();
@@ -20,6 +19,7 @@ const LoginForm = ({ Login, singInWithGoogle, toggle }) => {
         passwordRef.current.value
       );
       context.setIsUserLogged(true);
+      window.location.reload();
     } catch (err) {
       console.log(err.message);
     }

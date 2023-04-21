@@ -6,7 +6,7 @@ import { useState, useContext } from "react";
 import Icon from "../layout/Icon/Icon";
 import { UserContext } from "../Context/userContext";
 
-const Navbar = () => {
+const Navbar = ({ setIsUserLogged, displayNavbar }) => {
   const [profileClicked, setProfileClicked] = useState(false);
   const context = useContext(UserContext);
   console.log(context.isUserLogged);
@@ -17,7 +17,7 @@ const Navbar = () => {
   return (
     <div
       className="nav-bar"
-      style={{ display: context.isUserLogged ? "block" : "none" }}
+      style={{ display: displayNavbar ? "block" : "none" }}
     >
       <Between>
         <Line>
@@ -38,7 +38,8 @@ const Navbar = () => {
           <Icon icon={"user-circle"} onClick={triggerPopUp} size={"fa-lg"} />
         )}
 
-        {profileClicked && (context.isUserLogged ? <Modal /> : <></>)}
+        {profileClicked &&
+          (displayNavbar ? <Modal setIsUserLogged={setIsUserLogged} /> : <></>)}
       </Between>
     </div>
   );
