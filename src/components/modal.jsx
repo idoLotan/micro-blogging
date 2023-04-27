@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { useContext } from "react";
 import { UserContext } from "../Context/userContext";
-import useAuth from "../Hooks/useAuth";
 import Icon from "../layout/Icon/Icon";
 import { auth } from "../config/config";
 import { signOut } from "firebase/auth";
@@ -12,6 +11,8 @@ const Modal = ({ setIsUserLogged }) => {
 
   const logout = async (e) => {
     e.preventDefault();
+    let items = ["TOKEN", "currentUser"];
+    items.forEach((i) => localStorage.removeItem(i));
     await signOut(auth);
     setIsUserLogged(false);
   };

@@ -7,15 +7,17 @@ import { formatDate } from "../utils/utils";
 function AddTweet() {
   const [warning, setWarning] = useState("");
   const [content, setContent] = useState("");
-  const context = useContext(UserContext);
+  const { name, userId } = useContext(UserContext);
+
+  formatDate(new Date());
 
   const createTweet = async () => {
     const userCollectionRef = collection(db, "tweets");
     await addDoc(userCollectionRef, {
       content: content,
       date: formatDate(new Date()),
-      userName: context.name,
-      userId: context.userId,
+      userName: name,
+      userId: userId,
       key: Date.now(),
     });
   };
@@ -45,7 +47,7 @@ function AddTweet() {
       ></textarea>
       <div className="warning">{warning}</div>
 
-      <button onClick={onSubmit} className="tweet-btn btn">
+      <button onClick={onSubmit} className="tweet-btn btn" type="">
         Tweet
       </button>
     </form>

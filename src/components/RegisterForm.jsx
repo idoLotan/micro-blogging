@@ -18,11 +18,12 @@ const RegisterForm = ({ toggle }) => {
     e.preventDefault();
     try {
       const auth = getAuth();
-      const user = await createUserWithEmailAndPassword(
+      const resp = await createUserWithEmailAndPassword(
         auth,
         emailRef.current.value,
         passwordRef.current.value
       );
+
       updateProfile(auth.currentUser, {
         displayName: nameRef.current.value,
       });
@@ -33,10 +34,18 @@ const RegisterForm = ({ toggle }) => {
       });
 
       context.setIsUserLogged(true);
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }
   };
+
+  // async function handleRegister() {
+  //   const user = await register();
+  //   console.log(user);
+  //   const resp = await login();
+  //   console.log(resp);
+  // }
 
   return (
     <div className="login">

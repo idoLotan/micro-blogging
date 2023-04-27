@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Line, Between } from "../layout/Line/Line";
+
 import Modal from "./modal";
 import { useState, useContext } from "react";
 import Icon from "../layout/Icon/Icon";
@@ -9,7 +9,7 @@ import { UserContext } from "../Context/userContext";
 const Navbar = ({ setIsUserLogged, displayNavbar }) => {
   const [profileClicked, setProfileClicked] = useState(false);
   const context = useContext(UserContext);
-  console.log(context.isUserLogged);
+
   const triggerPopUp = () => {
     setProfileClicked(!profileClicked);
   };
@@ -19,15 +19,16 @@ const Navbar = ({ setIsUserLogged, displayNavbar }) => {
       className="nav-bar"
       style={{ display: displayNavbar ? "block" : "none" }}
     >
-      <Between>
-        <Line>
+      <div className="row between">
+        <div className="row">
           <Link to="/home">
             <div className="menu-item"> Home</div>
           </Link>
           <Link to="/profile">
             <div className="menu-item"> Profile</div>
           </Link>
-        </Line>
+        </div>
+
         {context.profilePic ? (
           <img
             className="profile-pic-navbar"
@@ -40,7 +41,7 @@ const Navbar = ({ setIsUserLogged, displayNavbar }) => {
 
         {profileClicked &&
           (displayNavbar ? <Modal setIsUserLogged={setIsUserLogged} /> : <></>)}
-      </Between>
+      </div>
     </div>
   );
 };

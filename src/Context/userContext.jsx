@@ -34,6 +34,7 @@ export const UserProvider = ({ children }) => {
     console.log(currentUser);
     if (currentUser == null) {
       localStorage.setItem("currentUser", "");
+      localStorage.setItem("TOKEN", "");
       setName("");
       setEmail("");
       setProfilePic("");
@@ -44,6 +45,7 @@ export const UserProvider = ({ children }) => {
       setProfilePic(currentUser.photoURL);
       setUserId(currentUser.uid);
       localStorage.setItem("currentUser", currentUser.displayName);
+      localStorage.setItem("TOKEN", currentUser.accessToken);
     }
   });
 

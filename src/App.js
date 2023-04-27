@@ -1,48 +1,20 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import React, { useContext } from "react";
 import Home from "./pages/Home/Home";
 import { Routes, Route } from "react-router-dom";
 import Profile from "./pages/Profile/Profile";
 import Login from "./pages/Login/Login";
-import { useState, useEffect, useRef } from "react";
-import { UserContext, UserProvider } from "./Context/userContext";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./config/config";
+import { useState, useEffect } from "react";
+import { UserProvider } from "./Context/userContext";
+import { userLoggedCheck } from "./Auth/auth";
 
 function App() {
-  const context = useContext(UserContext);
-
-  const [isUserLogged, setIsUserLogged] = useState(null);
+  const [isUserLogged, setIsUserLogged] = useState(false);
 
   useEffect(() => {
-    const userLoggedCheck = () => {
-      if (localStorage.getItem("currentUser") == false) {
-        setIsUserLogged(false);
-      } else {
-        setIsUserLogged(true);
-      }
-    };
-    userLoggedCheck();
+    const userStatus = userLoggedCheck();
+    setIsUserLogged(userStatus);
   }, []);
-
-  // onAuthStateChanged(auth, (currentUser) => {
-  //   authStateRef.current = currentUser;
-  //   console.log(currentUser);
-  //   if (currentUser == null) {
-  //     localStorage.setItem("currentUser", "");
-  //     setName("");
-  //     setEmail("");
-  //     setProfilePic("");
-  //     setUserId("");
-  //   } else {
-  //     setName(currentUser.displayName);
-  //     setEmail(currentUser.email);
-  //     setProfilePic(currentUser.photoURL);
-  //     setUserId(currentUser.uid);
-  //     localStorage.setItem("currentUser", currentUser.displayName);
-  //   }
-  // });
 
   return (
     <div className="App">
@@ -57,7 +29,10 @@ function App() {
             <Route path="*" element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/Login" element={<Login />} />
+            <Route
+              path="/Login"
+              element={<Login setIsUserLogged={setIsUserLogged} />}
+            />
           </Routes>
         ) : (
           <Login />

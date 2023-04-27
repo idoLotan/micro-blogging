@@ -1,9 +1,7 @@
 import React, { useContext, useRef } from "react";
 import { UserContext } from "../Context/userContext";
-import { login } from "../Auth/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, singInWithGoogle } from "../config/config";
-import useAuth from "../Hooks/useAuth";
 
 const LoginForm = ({ toggle }) => {
   const context = useContext(UserContext);

@@ -2,14 +2,10 @@ import { UserContext } from "../../Context/userContext";
 import { useContext, useState } from "react";
 import "./Profile.css";
 import UpdateForm from "../../components/updateForm";
-import useAuth from "../../Hooks/useAuth";
 import Icon from "../../layout/Icon/Icon";
-import useUpdate from "../../Hooks/useUpdate";
 
 const Profile = () => {
   const context = useContext(UserContext);
-  const { logout } = useAuth();
-  const { profileToggle, isEditProfile } = useUpdate();
   const [toggleProfile, setToggleProfile] = useState(false);
 
   const handleProfile = () => {

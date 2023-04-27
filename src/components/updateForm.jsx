@@ -4,9 +4,9 @@ import { useContext } from "react";
 import Icon from "../layout/Icon/Icon";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
-import { auth, storage } from "../config/config";
+import { auth, db, storage } from "../config/config";
 import { v4 } from "uuid";
-import useFetch from "../Hooks/useFetch";
+import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 
 const UpdateForm = ({ onCancel }) => {
   const context = useContext(UserContext);
@@ -15,12 +15,27 @@ const UpdateForm = ({ onCancel }) => {
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const hiddenFileInput = useRef(null);
-  const { changeName } = useFetch();
-
-  console.log(isLoading);
+  const currntUserId = context.userId;
 
   const nameRef = useRef();
   const emailRef = useRef();
+
+  const changeName = async (newName) => {
+    const userCollectionRef = collection(db, "tweets");
+    onSnapshot(userCollectionRef, (snapshot) => {
+      const tweetsIds = snapshot.docs.map(
+        (doc) => doc.data().userId == currntUserId && doc.id
+      );
+      tweetsIds.forEach((id) => {
+        if (id !== false) {
+          const docRef = doc(db, "tweets", id);
+          updateDoc(docRef, {
+            userName: newName,
+          });
+        }
+      });
+    });
+  };
 
   useEffect(() => {
     setImageUrl(context.profilePic);
@@ -113,7 +128,11 @@ const UpdateForm = ({ onCancel }) => {
                 <div className="container-half-width">
                   <div className="half-width"></div>
 
-                  <Icon icon={"camera"} className={"image-icon"}></Icon>
+                  <Icon
+                    icon={"camera"}
+                    className={"image-icon"}
+                    size={"fa-lg"}
+                  ></Icon>
                 </div>
               </div>
               <h3 className="col">{context.name}</h3>

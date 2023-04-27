@@ -1,12 +1,9 @@
 import "./Login.css";
-import useAuth from "../../Hooks/useAuth";
 import LoginForm from "../../components/LoginForm";
 import RegisterForm from "../../components/RegisterForm";
-import { UserContext } from "../../Context/userContext";
-import { useContext, useState } from "react";
+import { useState } from "react";
 
-const Login = () => {
-  const { login, register, singInWithGoogle } = useAuth();
+const Login = ({ setIsUserLogged }) => {
   const [isRegistered, setIsRegistered] = useState(true);
   const toggle = () => {
     setIsRegistered(!isRegistered);
@@ -15,12 +12,14 @@ const Login = () => {
     <>
       {isRegistered ? (
         <LoginForm
-          Login={login}
-          singInWithGoogle={singInWithGoogle}
           toggle={toggle}
+          setIsUserLogged={setIsUserLogged}
         ></LoginForm>
       ) : (
-        <RegisterForm toggle={toggle} register={register}></RegisterForm>
+        <RegisterForm
+          toggle={toggle}
+          setIsUserLogged={setIsUserLogged}
+        ></RegisterForm>
       )}
     </>
   );
