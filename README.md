@@ -2,7 +2,13 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Installing
+
+Clone the repository:
+git clone https://github.com/your-username/my-react-app.git
+
+Navigate to the project directory:
+cd micro-blogging
 
 In the project directory, you can run:
 
