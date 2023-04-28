@@ -7,7 +7,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 #### Clone the repository
 
 ```bash
-git clone https://github.com/your-username/my-react-app.git
+git clone https://github.com/idoLotan/micro-blogging.git
 ```
 
 #### Navigate to the project directory:
