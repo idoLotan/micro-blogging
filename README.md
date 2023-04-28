@@ -4,11 +4,23 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 # Installing
 
-Clone the repository:
-git clone https://github.com/your-username/my-react-app.git
+#### Clone the repository
 
-Navigate to the project directory:
+```bash
+git clone https://github.com/your-username/my-react-app.git
+```
+
+#### Navigate to the project directory:
+
+```bash
 cd micro-blogging
+```
+
+#### install dependencies
+
+```bash
+npm i
+```
 
 In the project directory, you can run:
 
